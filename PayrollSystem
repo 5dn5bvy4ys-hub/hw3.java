@@ -1,0 +1,19 @@
+import java.time.LocalDate;
+
+public class PayrollSystem {
+    public static void main(String[] args) {
+        // إنشاء موظف دوام كامل
+        Employee emp1 = new FullTimeEmployee("E001", "أحمد علي", 5000.0, LocalDate.of(2022, 5, 10), 1000.0);
+        
+        // إنشاء متعاقد
+        Employee emp2 = new ContractorEmployee("E002", "محمد خالد", LocalDate.of(2023, 1, 15), 50, 160);
+
+        System.out.println(emp1);
+        System.out.println("الراتب الصافي لـ " + emp1.getName() + ": " + emp1.calculateNetSalary());
+
+        System.out.println("-----------------------------------");
+
+        System.out.println(emp2);
+        System.out.println("الراتب الصافي لـ " + emp2.getName() + ": " + emp2.calculateNetSalary());
+    }
+}
