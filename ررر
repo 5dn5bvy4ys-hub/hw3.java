@@ -1,0 +1,83 @@
+import java.util.ArrayList;
+
+public class ParkingLot {
+
+    private ArrayList<ParkingSlot> slots;
+    private ArrayList<ParkingTicket> tickets;
+
+    public ParkingLot(int capacity) {
+
+        slots = new ArrayList<>();
+        tickets = new ArrayList<>();
+
+        for (int i = 1; i <= capacity; i++) {
+            slots.add(new ParkingSlot(i));
+        }
+    }
+
+    public void parkVehicle(Vehicle vehicle) {
+
+        for (ParkingSlot slot : slots) {
+
+            if (slot.isAvailable()) {
+
+                slot.parkVehicle(vehicle);
+
+                ParkingTicket ticket =
+                    new ParkingTicket(vehicle, slot.getSlotNumber());
+
+                tickets.add(ticket);
+
+                System.out.println("\nVehicle parked successfully!");
+                ticket.displayTicket();
+
+                return;
+            }
+        }
+
+        System.out.println("Sorry! Parking is full.");
+    }
+
+    public void removeVehicle(String plateNumber, int hours) {
+
+        for (ParkingSlot slot : slots) {
+
+            Vehicle vehicle = slot.getVehicle();
+
+            if (vehicle != null &&
+                vehicle.getPlateNumber().equalsIgnoreCase(plateNumber)) {
+
+                double fee = vehicle.calculateFee(hours);
+
+                System.out.println("\n===== PAYMENT DETAILS =====");
+                vehicle.displayInfo();
+                System.out.println("Parking Hours: " + hours);
+                System.out.println("Total Fee: " + fee);
+                System.out.println("===========================");
+
+                slot.removeVehicle();
+
+                System.out.println("Vehicle exited successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Vehicle not found!");
+    }
+
+    public void displayAvailableSlots() {
+
+        System.out.println("\n===== PARKING STATUS =====");
+
+        for (ParkingSlot slot : slots) {
+
+            if (slot.isAvailable()) {
+                System.out.println("Slot " +
+                    slot.getSlotNumber() + ": Available");
+            } else {
+                System.out.println("Slot " +
+                    slot.getSlotNumber() + ": Occupied");
+            }
+        }
+    }
+}
