@@ -1,19 +1,77 @@
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.time.LocalDate;
 
 public class PayrollSystem {
+
     public static void main(String[] args) {
-        // إنشاء موظف دوام كامل
-        Employee emp1 = new FullTimeEmployee("E001", "أحمد علي", 5000.0, LocalDate.of(2022, 5, 10), 1000.0);
-        
-        // إنشاء متعاقد
-        Employee emp2 = new ContractorEmployee("E002", "محمد خالد", LocalDate.of(2023, 1, 15), 50, 160);
 
-        System.out.println(emp1);
-        System.out.println("الراتب الصافي لـ " + emp1.getName() + ": " + emp1.calculateNetSalary());
+        ArrayList<Employee> employees = new ArrayList<>();
 
-        System.out.println("-----------------------------------");
+        employees.add(new FullTimeEmployee(
+            "E01", "Ahmed",
+            LocalDate.of(2020, 5, 10),
+            3000, 500, 4.0
+        ));
 
-        System.out.println(emp2);
-        System.out.println("الراتب الصافي لـ " + emp2.getName() + ": " + emp2.calculateNetSalary());
+        employees.add(new ContractorEmployee(
+            "E02", "Sara",
+            LocalDate.of(2022, 3, 15),
+            50, 40, 4.5
+        ));
+
+        employees.add(new FullTimeEmployee(
+            "E03", "Ali",
+            LocalDate.of(2019, 1, 20),
+            4000, 700, 5.0
+        ));
+
+        employees.add(new ContractorEmployee(
+            "E04", "Mona",
+            LocalDate.of(2021, 8, 12),
+            40, 30, 3.5
+        ));
+
+        // First sorting: By salary (Descending)
+
+        Collections.sort(employees);
+
+        System.out.println("Employees sorted by salary:");
+
+        for (Employee e : employees) {
+            System.out.println(e);
+        }
+
+        // Second sorting: By joining date (Oldest first)
+
+        Collections.sort(employees,
+            Comparator.comparing(Employee::getJoinDate));
+
+        System.out.println("\nEmployees sorted by join date:");
+
+        for (Employee e : employees) {
+            System.out.println(e.getName() + " - "
+                    + e.getJoinDate());
+        }
+
+        // Calculate total taxes and bonuses
+
+        double totalTax = 0;
+        double totalBonus = 0;
+
+        for (Employee e : employees) {
+
+            totalTax += e.calculateTax();
+
+            totalBonus += e.calculateBonus(
+                e.getPerformanceScore()
+            );
+        }
+
+        System.out.println("\nTotal Taxes: " + totalTax);
+
+        System.out.println("Total Bonuses: " + totalBonus);
     }
 }
