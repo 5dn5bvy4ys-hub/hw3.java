@@ -1,38 +1,29 @@
+
 import java.time.LocalDate;
 
-public abstract class Employee implements Comparable<Employee>, Taxable, BonusCalculable {
+public abstract class Employee implements
+        Taxable, BonusCalculable, Comparable<Employee> {
+
     private String id;
     private String name;
-    protected double baseSalary;
     private LocalDate joinDate;
 
-    // المُشيد (Constructor)
-    public Employee(String id, String name, double baseSalary, LocalDate joinDate) {
+    protected double baseSalary;
+
+    private double performanceScore;
+
+    public Employee(String id, String name,
+                    LocalDate joinDate,
+                    double baseSalary,
+                    double performanceScore) {
+
         this.id = id;
         this.name = name;
-        this.baseSalary = baseSalary;
         this.joinDate = joinDate;
+        this.baseSalary = baseSalary;
+        this.performanceScore = performanceScore;
     }
 
-    // الدوال المجردة والمعرفة
-    public abstract double calculateNetSalary();
-
-    @Override
-    public int compareTo(Employee other) {
-        return this.id.compareTo(other.id);
-    }
-
-    @Override
-    public double calculateTax() {
-        return this.baseSalary * TAX_RATE;
-    }
-
-    @Override
-    public double calculateBonus(double performanceScore) {
-        return this.baseSalary * (performanceScore / 100);
-    }
-
-    (Get// دوال الحصول على البيانات ters)
     public String getId() {
         return id;
     }
@@ -41,16 +32,26 @@ public abstract class Employee implements Comparable<Employee>, Taxable, BonusCa
         return name;
     }
 
-    public double getBaseSalary() {
-        return baseSalary;
-    }
-
     public LocalDate getJoinDate() {
         return joinDate;
     }
 
+    public double getPerformanceScore() {
+        return performanceScore;
+    }
+
+    public double calculateTax() {
+        return calculateNetSalary() * TAX_RATE;
+    }
+
+    public abstract double calculateNetSalary();
+
     @Override
-    public String toString() {
-        return "Employee{id='" + id + "', name='" + name + "', baseSalary=" + baseSalary + ", joinDate=" + joinDate + "}";
+    public int compareTo(Employee other) {
+        return Double.compare(
+            other.calculateNetSalary(),
+            this.calculateNetSalary()
+        );
     }
 }
+
